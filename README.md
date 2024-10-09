@@ -24,11 +24,17 @@ To use the Xcode plugin you must use the Swift Package rather than the manual do
 
 With the package added you can right mouse click on your app project in the project navigator and select **GenerateCobrowseSelectors**.
 
+<img width="369" alt="xcode-plugin-1" src="https://github.com/user-attachments/assets/acedae93-bccc-468f-8026-4f5586e09395">
+
 Select your targets you wish to use and click run.
 
 Aruments can be passed by expanding the arguments section and clicking + to add a new argument.
 
+<img width="532" alt="xcode-plugin-2" src="https://github.com/user-attachments/assets/6186fdbc-1948-4deb-9822-a345a8317990">
+
 It will ask for permission to modify your files. This is needed in order for the selectors to be added in the correct places.
+
+<img width="372" alt="xcode-plugin-3" src="https://github.com/user-attachments/assets/c9dfef16-b252-4bef-944e-2bf48fdac1ea">
 
 ### Command line
 
