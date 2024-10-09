@@ -2,7 +2,7 @@ import PackagePlugin
 import Foundation
 
 @main
-struct CBIORedactionPlugin: CommandPlugin {
+struct CBIOGenerateSelectorPlugin: CommandPlugin {
 
     func performCommand(context: PluginContext, arguments: [String]) throws {
 
@@ -23,7 +23,7 @@ struct CBIORedactionPlugin: CommandPlugin {
 #if canImport (XcodeProjectPlugin)
 import XcodeProjectPlugin
 
-extension CBIORedactionPlugin: XcodeCommandPlugin {
+extension CBIOGenerateSelectorPlugin: XcodeCommandPlugin {
     func performCommand (context: XcodePluginContext, arguments: [String]) throws {
 
         let tool = try context.tool(named: "cbio")
@@ -35,14 +35,9 @@ extension CBIORedactionPlugin: XcodeCommandPlugin {
             else { throw "No target specified" }
 
         for targetName in arguments.projectTargets {
-            guard
-                let target = context.xcodeProject.targets.first(where: { $0.displayName == targetName })
-            else {
-                print("Target \(targetName) not found in \(context.xcodeProject.displayName) Xcode Project")
-                return
+            if let target = context.xcodeProject.targets.first(where: { $0.displayName == targetName }) {
+                files += target.inputFiles.map { $0.path.string }
             }
-
-            files += target.inputFiles.map { $0.path.string }
         }
 
         try process(files, with: arguments, using: cbio)
@@ -83,18 +78,35 @@ extension Array where Element == String {
             "--disable",
             "--include",
             "--ignore",
-            "--source"
+            "--source",
+            "--target"
+        ]
+        
+        let knownTargets: Set<String> = [
+            "tags",
+            "ids",
+            "accessibilityIdentifiers"
         ]
 
         return self.enumerated().reduce(into: [String]()) { result, current in
             let (index, argument) = current
-
-            if knownArgumentsSet.contains(argument) {
+            
+            guard knownArgumentsSet.contains(argument)
+                else { return }
+            
+            if argument == "--target" {
+                guard index + 1 < self.count
+                    else { return }
+                
+                let value = self[index + 1]
+                
+                guard knownTargets.contains(value)
+                    else { return }
+                
                 result.append(argument)
-
-                if index + 1 < self.count, !self[index + 1].hasPrefix("--") {
-                    result.append(self[index + 1])
-                }
+                result.append(value)
+            } else {
+                result.append(argument)
             }
         }
     }
