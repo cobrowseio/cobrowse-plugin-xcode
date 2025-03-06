@@ -75,11 +75,13 @@ extension Array where Element == String {
             "--verbose",
             "--dry-run",
             "--known-views",
+            "--validate",
+            "--target",
             "--disable",
             "--include",
             "--ignore",
-            "--source",
-            "--target"
+            "--default-attributes",
+            "--source"
         ]
         
         let knownTargets: Set<String> = [
@@ -102,6 +104,14 @@ extension Array where Element == String {
                 
                 guard knownTargets.contains(value)
                     else { return }
+                
+                result.append(argument)
+                result.append(value)
+            } else if argument == "--default-attributes" {
+                guard index + 1 < self.count
+                else { return }
+                
+                let value = self[index + 1]
                 
                 result.append(argument)
                 result.append(value)
