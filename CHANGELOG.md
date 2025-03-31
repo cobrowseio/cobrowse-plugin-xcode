@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](#) (2025-03-31)
+
+
+### Bug Fixes
+
+* be more selective about selecting classes that conform to View ([#3](#)) ([323ce5a](#))
+* Use GlobPattern ([#2](#)) ([97c6426](#))
+
 ### [0.1.4](#) (2025-03-06)
 
 ### [0.1.3](#) (2025-03-06)
