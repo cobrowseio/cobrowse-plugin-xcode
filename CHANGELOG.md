@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](#) (2025-03-31)
+
+
+### Features
+
+* Add `--comment-before` and `--comment-after` options ([#4](#)) ([b7b762e](#))
+
+
+### Bug Fixes
+
+* update built-in class list ([d37402d](#))
+
 ### [0.1.5](#) (2025-03-31)
 
 
