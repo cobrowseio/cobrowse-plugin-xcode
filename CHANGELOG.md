@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](#) (2025-04-07)
+
+
+### Features
+
+* Only add view modifier to views where it's scope's return type is not a concrete type ([#5](#)) ([5e2c0cd](#))
+
 ### [0.1.6](#) (2025-03-31)
 
 
