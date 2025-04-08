@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](#) (2025-04-08)
+
+
+### Bug Fixes
+
+* Continue to visit children of extensions to visit views defined within them ([#6](#)) ([b742c41](#))
+
 ### [0.1.7](#) (2025-04-07)
 
 
