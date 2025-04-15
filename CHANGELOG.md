@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](#) (2025-04-15)
+
+
+### Bug Fixes
+
+* Allow for id's to be string literals or dynamic values ([#7](#)) ([aba40a0](#))
+
 ### [0.1.9](#) (2025-04-15)
 
 ### [0.1.8](#) (2025-04-08)
