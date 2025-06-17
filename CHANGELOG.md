@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](#) (2025-06-17)
+
+
+### Bug Fixes
+
+* Add `--ignore-variables` flag ([#14](#)) ([c3a3a22](#))
+* Add support for detecting variable declarations and return statements ([#13](#)) ([f2fe6e5](#))
+* Add support to parse tuple return types ([#11](#)) ([781f4b0](#))
+* Don't add view modifier to views that are default values of function parameters ([#12](#)) ([a29e3cf](#))
+* Print the version number when running the commands ([#9](#)) ([b8ed8f2](#))
+
 ### [0.1.10](#) (2025-04-15)
 
 
