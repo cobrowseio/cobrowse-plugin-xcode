@@ -2,11 +2,11 @@
   "schemaVersion": "1.0",
   "artifacts": {
     "cbio": {
-      "version": "0.1.11",
+      "version": "0.1.13",
       "type": "executable",
       "variants": [
         {
-          "path": "cbio-0.1.11-macos/cbio",
+          "path": "cbio-0.1.13-macos/cbio",
           "supportedTriples": ["x86_64-apple-macosx", "arm64-apple-macosx"]
         }
       ]

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13](#) (2025-06-23)
+
+### [0.1.12](#) (2025-06-23)
+
+
+### Bug Fixes
+
+* Ignore any attributes on the type ([#16](#)) ([c7da925](#))
+* Remove enclosing view check ([#19](#)) ([07378ad](#))
+* Support optional types ([#17](#)) ([54c5589](#))
+
 ### [0.1.11](#) (2025-06-17)
 
 
