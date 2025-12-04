@@ -2,17 +2,34 @@
 import PackageDescription
 
 let package = Package(
-    name: "CobrowseIOPlugin",
+    name: "CobrowseIO Plugins",
     platforms: [
         .macOS(.v10_13), .iOS(.v12)
     ],
     products: [
         .executable(name: "cbio",
                     targets: ["cbio-cli"]),
-        .plugin(name: "CobrowseSelectorsPlugin",
-                targets: ["GenerateCobrowseSelectors"])
+        .plugin(name: "GenerateAccessibilityIdentifiers",
+                targets: [
+                    "GenerateAccessibilityIdentifiers"
+                ]),
+        .plugin(name: "GenerateCobrowseSelectors",
+                targets: [
+                    "GenerateCobrowseSelectors",
+                ])
     ],
     targets: [
+        .plugin(
+            name: "GenerateAccessibilityIdentifiers",
+            capability: .command(
+                intent: .custom(
+                    verb: "generate-accessibility-identifiers",
+                    description: "Generate structure based accessibility identifiers"),
+            permissions: [
+                .writeToPackageDirectory(reason: "We need to modify your source to add the generated accessibility identifiers.")
+            ]),
+            dependencies: [ "cbio-cli" ]
+        ),
         .plugin(
             name: "GenerateCobrowseSelectors",
             capability: .command(

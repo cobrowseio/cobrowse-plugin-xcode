@@ -51,8 +51,9 @@ private func process(_ files: [String], with arguments: [String], using executab
     process.executableURL = executable
 
     process.arguments = [
-        "selector",
-        "generate"
+        "accessibility",
+        "generate",
+        "--verbose",
     ] + arguments.knownArguments + files
 
     try process.run()
@@ -81,16 +82,13 @@ extension Array where Element == String {
             "--disable",
             "--include",
             "--ignore",
-            "--default-attributes",
-            "--comment-before",
-            "--comment-after",
+            "--prefix",
+            "--postfix",
             "--source"
         ]
         
         let knownTargets: Set<String> = [
-            "tags",
-            "ids",
-            "accessibilityIdentifiers"
+            "identifiers"
         ]
         
         let knownFileSearchStrategy: Set<String> = [
@@ -123,14 +121,6 @@ extension Array where Element == String {
                 
                 guard knownFileSearchStrategy.contains(value)
                     else { return }
-                
-                result.append(argument)
-                result.append(value)
-            } else if argument == "--default-attributes" {
-                guard index + 1 < self.count
-                else { return }
-                
-                let value = self[index + 1]
                 
                 result.append(argument)
                 result.append(value)
