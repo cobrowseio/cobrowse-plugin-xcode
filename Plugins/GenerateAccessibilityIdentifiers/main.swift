@@ -2,7 +2,7 @@ import PackagePlugin
 import Foundation
 
 @main
-struct CBIOGenerateSelectorPlugin: CommandPlugin {
+struct CBIOGenerateAccessibilityIdentifiersPlugin: CommandPlugin {
 
     func performCommand(context: PluginContext, arguments: [String]) throws {
 
@@ -23,7 +23,7 @@ struct CBIOGenerateSelectorPlugin: CommandPlugin {
 #if canImport (XcodeProjectPlugin)
 import XcodeProjectPlugin
 
-extension CBIOGenerateSelectorPlugin: XcodeCommandPlugin {
+extension CBIOGenerateAccessibilityIdentifiersPlugin: XcodeCommandPlugin {
     func performCommand (context: XcodePluginContext, arguments: [String]) throws {
 
         let tool = try context.tool(named: "cbio")
@@ -60,11 +60,11 @@ private func process(_ files: [String], with arguments: [String], using executab
     process.waitUntilExit()
 
     if process.terminationReason == .exit && process.terminationStatus == 0 {
-        print("Successfully generated redaction selectors")
+        print("Successfully generated accessibility identifiers")
     }
     else {
         let problem = "\(process.terminationReason):\(process.terminationStatus)"
-        Diagnostics.error("Failed to generate redaction selectors: \(problem)")
+        Diagnostics.error("Failed to generate accessibility identifiers: \(problem)")
     }
 }
 
