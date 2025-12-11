@@ -72,19 +72,21 @@ extension Array where Element == String {
 
     var knownArguments: [String] {
         let knownArgumentsSet: Set<String> = [
-            "--verbose",
+            "--comment-after",
+            "--comment-before",
+            "--default-attributes",
+            "--disable",
             "--dry-run",
             "--file-search-strategy",
-            "--known-views",
-            "--validate",
-            "--target",
-            "--disable",
-            "--include",
             "--ignore",
-            "--default-attributes",
-            "--comment-before",
-            "--comment-after",
-            "--source"
+            "--ignore-variables",
+            "--include",
+            "--indent",
+            "--known-views",
+            "--source",
+            "--target",
+            "--validate",
+            "--verbose"
         ]
         
         let knownTargets: Set<String> = [
