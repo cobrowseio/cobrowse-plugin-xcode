@@ -53,7 +53,6 @@ private func process(_ files: [String], with arguments: [String], using executab
     process.arguments = [
         "accessibility",
         "generate",
-        "--verbose",
     ] + arguments.knownArguments + files
 
     try process.run()
