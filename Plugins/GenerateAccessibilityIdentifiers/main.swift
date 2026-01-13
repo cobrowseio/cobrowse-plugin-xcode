@@ -5,149 +5,69 @@ import Foundation
 struct CBIOGenerateAccessibilityIdentifiersPlugin: CommandPlugin {
 
     func performCommand(context: PluginContext, arguments: [String]) throws {
-
         let tool = try context.tool(named: "cbio")
         let cbio = URL(fileURLWithPath: tool.path.string)
+        let files = collectFiles(from: context)
 
-        let files = context.package.targets.compactMap { target -> [String]? in
-            guard let sourceTarget = target as? SourceModuleTarget
-                else { return nil }
-
-            return sourceTarget.sourceFiles.map { $0.path.string }
-        }.flatMap { $0 }
-
-        try process([files.first!], with: arguments, using: cbio)
+        try process(files, with: arguments, using: cbio)
     }
 }
 
-#if canImport (XcodeProjectPlugin)
+#if canImport(XcodeProjectPlugin)
 import XcodeProjectPlugin
 
 extension CBIOGenerateAccessibilityIdentifiersPlugin: XcodeCommandPlugin {
-    func performCommand (context: XcodePluginContext, arguments: [String]) throws {
 
+    func performCommand(context: XcodePluginContext, arguments: [String]) throws {
         let tool = try context.tool(named: "cbio")
         let cbio = URL(fileURLWithPath: tool.path.string)
-
-        var files: [String] = []
-
-        guard arguments.count >= 2, arguments.contains("--target")
-            else { throw "No target specified" }
-
-        for targetName in arguments.projectTargets {
-            if let target = context.xcodeProject.targets.first(where: { $0.displayName == targetName }) {
-                files += target.inputFiles.map { $0.path.string }
-            }
-        }
+        let files = try collectFiles(from: context, arguments: arguments, excluding: targets)
 
         try process(files, with: arguments, using: cbio)
     }
 }
 #endif
 
+// MARK: - Command Configuration
+
+private let command = CBIOCommand(
+    subcommand: "accessibility",
+    action: "generate",
+    successMessage: "Successfully generated accessibility identifiers",
+    errorMessage: "Failed to generate accessibility identifiers"
+)
+
+private let knownArgumentsSet: Set<String> = [
+    "--comment-after",
+    "--comment-before",
+    "--disable",
+    "--dry-run",
+    "--file-search-strategy",
+    "--ignore",
+    "--ignore-variables",
+    "--include",
+    "--indent",
+    "--known-views",
+    "--postfix",
+    "--prefix",
+    "--source",
+    "--target",
+    "--validate",
+    "--verbose"
+]
+
+private let knownTargets: Set<String> = [
+    "identifiers"
+]
+
+private let targets: Set<String> = [
+    "identifiers"
+]
+
 private func process(_ files: [String], with arguments: [String], using executable: URL) throws {
-
-    let process = Process()
-    process.executableURL = executable
-
-    process.arguments = [
-        "accessibility",
-        "generate",
-    ] + arguments.knownArguments + files
-
-    try process.run()
-
-    process.waitUntilExit()
-
-    if process.terminationReason == .exit && process.terminationStatus == 0 {
-        print("Successfully generated accessibility identifiers")
-    }
-    else {
-        let problem = "\(process.terminationReason):\(process.terminationStatus)"
-        Diagnostics.error("Failed to generate accessibility identifiers: \(problem)")
-    }
+    let filteredArgs = arguments.filteredArguments(
+        knownArguments: knownArgumentsSet,
+        knownTargets: knownTargets
+    )
+    try runCBIO(command, files: files, arguments: filteredArgs, executable: executable)
 }
-
-extension Array where Element == String {
-
-    var knownArguments: [String] {
-        let knownArgumentsSet: Set<String> = [
-            "--comment-after",
-            "--comment-before",
-            "--disable",
-            "--dry-run",
-            "--file-search-strategy",
-            "--ignore",
-            "--ignore-variables",
-            "--include",
-            "--indent",
-            "--known-views",
-            "--postfix",
-            "--prefix",
-            "--source",
-            "--target",
-            "--validate",
-            "--verbose"
-        ]
-        
-        let knownTargets: Set<String> = [
-            "identifiers"
-        ]
-        
-        let knownFileSearchStrategy: Set<String> = [
-            "find",
-            "fileManager"
-        ]
-
-        return self.enumerated().reduce(into: [String]()) { result, current in
-            let (index, argument) = current
-            
-            guard knownArgumentsSet.contains(argument)
-                else { return }
-            
-            if argument == "--target" {
-                guard index + 1 < self.count
-                    else { return }
-                
-                let value = self[index + 1]
-                
-                guard knownTargets.contains(value)
-                    else { return }
-                
-                result.append(argument)
-                result.append(value)
-            } else if argument == "--file-search-strategy" {
-                guard index + 1 < self.count
-                    else { return }
-                
-                let value = self[index + 1]
-                
-                guard knownFileSearchStrategy.contains(value)
-                    else { return }
-                
-                result.append(argument)
-                result.append(value)
-            } else {
-                result.append(argument)
-            }
-        }
-    }
-
-    var projectTargets: [String] {
-        var targetNames = [String]()
-
-        for index in stride(from: 0, to: self.count, by: 2) {
-            if self[index] == "--target", index + 1 < self.count {
-                targetNames.append(self[index + 1])
-            }
-        }
-
-        return targetNames
-    }
-}
-
-#if hasFeature(RetroactiveAttribute)
-extension String: @retroactive Error { }
-#else
-extension String: Error { }
-#endif
