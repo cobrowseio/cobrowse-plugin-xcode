@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.15](#) (2026-04-07)
+
+### [0.1.14](#) (2026-04-02)
+
+
+### Features
+
+* Add `accessibility generate` command ([#8](#)) ([2a0812e](#))
+
 ### [0.1.13](#) (2025-06-23)
 
 ### [0.1.12](#) (2025-06-23)
