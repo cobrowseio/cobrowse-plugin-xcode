@@ -2,7 +2,7 @@ import PackagePlugin
 import Foundation
 
 @main
-struct CBIOGenerateSelectorPlugin: CommandPlugin {
+struct CBIOGenerateAccessibilityIdentifiersPlugin: CommandPlugin {
 
     func performCommand(context: PluginContext, arguments: [String]) throws {
         let tool = try context.tool(named: "cbio")
@@ -16,7 +16,7 @@ struct CBIOGenerateSelectorPlugin: CommandPlugin {
 #if canImport(XcodeProjectPlugin)
 import XcodeProjectPlugin
 
-extension CBIOGenerateSelectorPlugin: XcodeCommandPlugin {
+extension CBIOGenerateAccessibilityIdentifiersPlugin: XcodeCommandPlugin {
 
     func performCommand(context: XcodePluginContext, arguments: [String]) throws {
         let tool = try context.tool(named: "cbio")
@@ -31,16 +31,15 @@ extension CBIOGenerateSelectorPlugin: XcodeCommandPlugin {
 // MARK: - Command Configuration
 
 private let command = CBIOCommand(
-    subcommand: "selector",
+    subcommand: "accessibility",
     action: "generate",
-    successMessage: "Successfully generated redaction selectors",
-    errorMessage: "Failed to generate redaction selectors"
+    successMessage: "Successfully generated accessibility identifiers",
+    errorMessage: "Failed to generate accessibility identifiers"
 )
 
 private let knownArgumentsSet: Set<String> = [
     "--comment-after",
     "--comment-before",
-    "--default-attributes",
     "--disable",
     "--dry-run",
     "--file-search-strategy",
@@ -49,6 +48,8 @@ private let knownArgumentsSet: Set<String> = [
     "--include",
     "--indent",
     "--known-views",
+    "--postfix",
+    "--prefix",
     "--source",
     "--target",
     "--validate",
@@ -56,24 +57,17 @@ private let knownArgumentsSet: Set<String> = [
 ]
 
 private let knownTargets: Set<String> = [
-    "tags",
-    "ids",
-    "accessibilityIdentifiers"
+    "identifiers"
 ]
 
 private let targets: Set<String> = [
-    "tags",
-    "ids",
-    "accessibilityIdentifiers"
+    "identifiers"
 ]
 
 private func process(_ files: [String], with arguments: [String], using executable: URL) throws {
     let filteredArgs = arguments.filteredArguments(
         knownArguments: knownArgumentsSet,
-        knownTargets: knownTargets,
-        additionalValueHandlers: [
-            "--default-attributes": { value in value }
-        ]
+        knownTargets: knownTargets
     )
     try runCBIO(command, files: files, arguments: filteredArgs, executable: executable)
 }
